@@ -1,4 +1,10 @@
-﻿<!doctype html>
+﻿$ErrorActionPreference="Stop"
+$root=(Get-Location).Path
+$index=Join-Path $root "index.html"
+if(-not(Test-Path $index)){throw "INDEX_NOT_FOUND"}
+
+$html=@'
+<!doctype html>
 <html lang="ja">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -47,3 +53,13 @@ h1{font-size:clamp(36px,7vw,76px);line-height:1.05;max-width:900px;margin:12px 0
 </main>
 <footer class="wrap">Cognitive Ecology — 人と環境の組み合わせから、生き方・働き方を探す。</footer>
 </body></html>
+'@
+
+Set-Content $index -Value $html -Encoding UTF8
+$required=@("focus.html","ai-work.html","remote-work.html","relationships.html","life.html","ai-income.html")
+$check=Get-Content $index -Raw
+foreach($f in $required){if($check -notmatch [regex]::Escape("href=`"./$f`"")){throw "LINK_FAILED:$f"}}
+if(($check | Select-String 'href=""' -AllMatches).Matches.Count -gt 0){throw "EMPTY_LINK_FOUND"}
+Write-Host "HOME_REPAIR_OK"
+Write-Host "LINKS_OK: 6/6"
+powershell -ExecutionPolicy Bypass -File ".\.phase2\publish-cognitive-ecology.ps1"
