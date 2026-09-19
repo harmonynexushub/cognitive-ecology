@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "policy": {
+    "identity_first": true,
+    "silent_cross_project_fallback": false,
+    "require_target_match_before_write": true,
+    "require_production_verification_before_complete": true
+  },
+  "projects": {
+    "cognitive-ecology": {
+      "name": "Cognitive Ecology",
+      "identity": "harmony-nexus",
+      "source": {
+        "github": {
+          "owner": "harmonynexushub",
+          "repo": "cognitive-ecology",
+          "branch": "main",
+          "required": true,
+          "current_access": "cli-write-verified"
+        }
+      },
+      "deployment": {
+        "strategy": "github-pages-main-root",
+        "provider": "github-pages",
+        "team": null,
+        "project": "harmonynexushub/cognitive-ecology",
+        "production_domain": "https://harmonynexushub.github.io/cognitive-ecology/"
+      },
+      "backend": {
+        "provider": "netlify",
+        "site_id": "d1bc24ca-ac9f-44a4-b312-7ea1f482824f",
+        "role": "hidden-backend-only"
+      },
+      "guards": {
+        "forbid_stratum_target": true,
+        "forbidden_team_ids": [
+          "team_LqOI0mDt9piVNS4Yu7MtiGL7"
+        ],
+        "allow_github_bypass_for_deploy": true
+      }
+    },
+    "stratum": {
+      "name": "Stratum",
+      "identity": "stratum",
+      "deployment": {
+        "provider": "vercel",
+        "team_id": "team_LqOI0mDt9piVNS4Yu7MtiGL7"
+      },
+      "guards": {
+        "forbid_cognitive_ecology_assets": true
+      }
+    }
+  }
+}
